@@ -22,7 +22,7 @@ import (
 // with the default values initialized.
 func NewGetSleepListParams() *GetSleepListParams {
 	var (
-		offsetDefault = int64("0")
+		offsetDefault = int64(0)
 	)
 	return &GetSleepListParams{
 		Offset: offsetDefault,
@@ -35,7 +35,7 @@ func NewGetSleepListParams() *GetSleepListParams {
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetSleepListParamsWithTimeout(timeout time.Duration) *GetSleepListParams {
 	var (
-		offsetDefault = int64("0")
+		offsetDefault = int64(0)
 	)
 	return &GetSleepListParams{
 		Offset: offsetDefault,
@@ -48,7 +48,7 @@ func NewGetSleepListParamsWithTimeout(timeout time.Duration) *GetSleepListParams
 // with the default values initialized, and the ability to set a context for a request
 func NewGetSleepListParamsWithContext(ctx context.Context) *GetSleepListParams {
 	var (
-		offsetDefault = int64("0")
+		offsetDefault = int64(0)
 	)
 	return &GetSleepListParams{
 		Offset: offsetDefault,
@@ -61,7 +61,7 @@ func NewGetSleepListParamsWithContext(ctx context.Context) *GetSleepListParams {
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetSleepListParamsWithHTTPClient(client *http.Client) *GetSleepListParams {
 	var (
-		offsetDefault = int64("0")
+		offsetDefault = int64(0)
 	)
 	return &GetSleepListParams{
 		Offset:     offsetDefault,

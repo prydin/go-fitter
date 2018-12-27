@@ -7,8 +7,10 @@ package auth
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/swag"
 
 	strfmt "github.com/go-openapi/strfmt"
 )
@@ -65,13 +67,21 @@ func NewOauthTokenOK() *OauthTokenOK {
 A successful request.
 */
 type OauthTokenOK struct {
+	Payload *OauthTokenOKBody
 }
 
 func (o *OauthTokenOK) Error() string {
-	return fmt.Sprintf("[POST /oauth2/token][%d] oauthTokenOK ", 200)
+	return fmt.Sprintf("[POST /oauth2/token][%d] oauthTokenOK  %+v", 200, o.Payload)
 }
 
 func (o *OauthTokenOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(OauthTokenOKBody)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }
@@ -136,5 +146,55 @@ func (o *OauthTokenConflict) Error() string {
 
 func (o *OauthTokenConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
+	return nil
+}
+
+/*OauthTokenOKBody oauth token o k body
+swagger:model OauthTokenOKBody
+*/
+type OauthTokenOKBody struct {
+
+	// The access token your application should use to make requests on behalf of the user.
+	AccessToken string `json:"access_token,omitempty"`
+
+	// How long in seconds the access token will be valid for.
+	ExpiresIn int64 `json:"expires_in,omitempty"`
+
+	// A token used to extend the lifetime of an authorization
+	RefreshToken string `json:"refresh_token,omitempty"`
+
+	// A space-separated list of scopes the user authorized. May be fewer than the application requested.
+	Scope string `json:"scope,omitempty"`
+
+	// Provides any state that might be useful to your application when the user is redirected back to your application. This parameter will be added to the redirect URI exactly as your application specifies in the authorization request.
+	State string `json:"state,omitempty"`
+
+	// Will always be 'Bearer'.
+	TokenType string `json:"token_type,omitempty"`
+
+	// The id (sometimes referred to as encoded_id) of the Fitbit user that authorized your application.
+	UserID string `json:"user_id,omitempty"`
+}
+
+// Validate validates this oauth token o k body
+func (o *OauthTokenOKBody) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *OauthTokenOKBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *OauthTokenOKBody) UnmarshalBinary(b []byte) error {
+	var res OauthTokenOKBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
 	return nil
 }

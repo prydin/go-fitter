@@ -22,7 +22,7 @@ import (
 // with the default values initialized.
 func NewGetActivitiesLogListParams() *GetActivitiesLogListParams {
 	var (
-		offsetDefault = int64("0")
+		offsetDefault = int64(0)
 	)
 	return &GetActivitiesLogListParams{
 		Offset: offsetDefault,
@@ -35,7 +35,7 @@ func NewGetActivitiesLogListParams() *GetActivitiesLogListParams {
 // with the default values initialized, and the ability to set a timeout on a request
 func NewGetActivitiesLogListParamsWithTimeout(timeout time.Duration) *GetActivitiesLogListParams {
 	var (
-		offsetDefault = int64("0")
+		offsetDefault = int64(0)
 	)
 	return &GetActivitiesLogListParams{
 		Offset: offsetDefault,
@@ -48,7 +48,7 @@ func NewGetActivitiesLogListParamsWithTimeout(timeout time.Duration) *GetActivit
 // with the default values initialized, and the ability to set a context for a request
 func NewGetActivitiesLogListParamsWithContext(ctx context.Context) *GetActivitiesLogListParams {
 	var (
-		offsetDefault = int64("0")
+		offsetDefault = int64(0)
 	)
 	return &GetActivitiesLogListParams{
 		Offset: offsetDefault,
@@ -61,7 +61,7 @@ func NewGetActivitiesLogListParamsWithContext(ctx context.Context) *GetActivitie
 // with the default values initialized, and the ability to set a custom HTTPClient for a request
 func NewGetActivitiesLogListParamsWithHTTPClient(client *http.Client) *GetActivitiesLogListParams {
 	var (
-		offsetDefault = int64("0")
+		offsetDefault = int64(0)
 	)
 	return &GetActivitiesLogListParams{
 		Offset:     offsetDefault,
