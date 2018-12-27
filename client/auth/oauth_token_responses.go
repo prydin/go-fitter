@@ -13,6 +13,8 @@ import (
 	"github.com/go-openapi/swag"
 
 	strfmt "github.com/go-openapi/strfmt"
+
+	models "github.com/prydin/go-fitter/models"
 )
 
 // OauthTokenReader is a Reader for the OauthToken structure.
@@ -40,13 +42,6 @@ func (o *OauthTokenReader) ReadResponse(response runtime.ClientResponse, consume
 
 	case 401:
 		result := NewOauthTokenUnauthorized()
-		if err := result.readResponse(response, consumer, o.formats); err != nil {
-			return nil, err
-		}
-		return nil, result
-
-	case 409:
-		result := NewOauthTokenConflict()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -96,13 +91,21 @@ func NewOauthTokenBadRequest() *OauthTokenBadRequest {
 The request had bad syntax or was inherently impossible to be satisfied.
 */
 type OauthTokenBadRequest struct {
+	Payload *models.Oauth2ErrorResponse
 }
 
 func (o *OauthTokenBadRequest) Error() string {
-	return fmt.Sprintf("[POST /oauth2/token][%d] oauthTokenBadRequest ", 400)
+	return fmt.Sprintf("[POST /oauth2/token][%d] oauthTokenBadRequest  %+v", 400, o.Payload)
 }
 
 func (o *OauthTokenBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.Oauth2ErrorResponse)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }
@@ -117,34 +120,21 @@ func NewOauthTokenUnauthorized() *OauthTokenUnauthorized {
 Authentication was unsuccessful due to invalid client credentials.
 */
 type OauthTokenUnauthorized struct {
+	Payload *models.Oauth2ErrorResponse
 }
 
 func (o *OauthTokenUnauthorized) Error() string {
-	return fmt.Sprintf("[POST /oauth2/token][%d] oauthTokenUnauthorized ", 401)
+	return fmt.Sprintf("[POST /oauth2/token][%d] oauthTokenUnauthorized  %+v", 401, o.Payload)
 }
 
 func (o *OauthTokenUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	return nil
-}
+	o.Payload = new(models.Oauth2ErrorResponse)
 
-// NewOauthTokenConflict creates a OauthTokenConflict with default headers values
-func NewOauthTokenConflict() *OauthTokenConflict {
-	return &OauthTokenConflict{}
-}
-
-/*OauthTokenConflict handles this case with default header values.
-
-Request conflict due to multiple clients attempting to refresh the same access token.
-*/
-type OauthTokenConflict struct {
-}
-
-func (o *OauthTokenConflict) Error() string {
-	return fmt.Sprintf("[POST /oauth2/token][%d] oauthTokenConflict ", 409)
-}
-
-func (o *OauthTokenConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }

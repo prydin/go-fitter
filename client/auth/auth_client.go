@@ -71,7 +71,7 @@ func (a *Client) OauthToken(params *OauthTokenParams) (*OauthTokenOK, error) {
 		Method:             "POST",
 		PathPattern:        "/oauth2/token",
 		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{""},
+		ConsumesMediaTypes: []string{"application/x-www-form-urlencoded"},
 		Schemes:            []string{"https"},
 		Params:             params,
 		Reader:             &OauthTokenReader{formats: a.formats},

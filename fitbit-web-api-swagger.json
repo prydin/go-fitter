@@ -105,6 +105,9 @@
                 "summary": "Get OAuth 2 access token",
                 "description": "Retrieves an OAuth 2 access token.",
                 "operationId": "oauthToken",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
                 "produces": [
                     "application/json"
                 ],
@@ -203,13 +206,16 @@
                             }
                     },
                     "400": {
-                        "description": "The request had bad syntax or was inherently impossible to be satisfied."
+                        "description": "The request had bad syntax or was inherently impossible to be satisfied.",
+                        "schema": {
+                            "$ref": "#/definitions/Oauth2ErrorResponse"
+                        }
                     },
                     "401": {
-                        "description": "Authentication was unsuccessful due to invalid client credentials."
-                    },
-                    "409": {
-                        "description": "Request conflict due to multiple clients attempting to refresh the same access token."
+                        "description": "Authentication was unsuccessful due to invalid client credentials.",
+                        "schema": {
+                            "$ref": "#/definitions/Oauth2ErrorResponse"
+                        }
                     }
                 }
             }
@@ -6079,6 +6085,36 @@
         }
     },
     "definitions": {
+        "Oauth2Error": {
+            "type": "object",
+            "properties": {
+                "errorType": {
+                    "type": "string",
+                    "description": "The type of error (see Oauth2 spec)."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "A detailed description of the error."
+                }
+            }
+        },
+        "Oauth2Errors": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Oauth2Error"
+              }
+        },
+        "Oauth2ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "$ref": "#/definitions/Oauth2Errors"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        }
     },
     "externalDocs": {
         "description": "Full documentation",
